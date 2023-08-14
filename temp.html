@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temperature Converter</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+    }
+    
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    
+    .input-container {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    input, select, button {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    input[type="number"], select {
+        margin-bottom: 10px;
+    }
+    
+    select {
+        cursor: pointer;
+        background-color: #f0f0f0;
+    }
+    
+    button {
+        cursor: pointer;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+    }
+    
+    button:hover {
+        background-color: #0056b3;
+    }
+    
+    #resultArea {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+        margin-top: 20px;
+        opacity: 0;
+        animation: fadeIn 1s ease-in-out forwards;
+    }
+    
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Temperature Converter</h1>
+        <div class="input-container">
+            <input type="number" id="temperatureInput" placeholder="Enter temperature">
+            <label for="unitSelect">Select Unit:</label>
+            <select id="unitSelect">
+                <option value="celsius">Celsius</option>
+                <option value="fahrenheit">Fahrenheit</option>
+                <option value="kelvin">Kelvin</option>
+            </select>
+            <button id="convertBtn">Convert</button>
+        </div>
+        <div id="resultArea"></div>
+    </div>
+
+    <script>document.addEventListener("DOMContentLoaded", function() {
+        const temperatureInput = document.getElementById("temperatureInput");
+        const unitSelect = document.getElementById("unitSelect");
+        const convertBtn = document.getElementById("convertBtn");
+        const resultArea = document.getElementById("resultArea");
+        const container = document.querySelector(".container");
+    
+        convertBtn.addEventListener("click", function() {
+            const temperature = parseFloat(temperatureInput.value);
+    
+            if (isNaN(temperature)) {
+                resultArea.textContent = "Please enter a valid number!";
+                return;
+            }
+    
+            const unit = unitSelect.value;
+            let convertedTemperature = 0;
+            let unitSymbol = "";
+    
+            if (unit === "celsius") {
+                convertedTemperature = (temperature * 9 / 5) + 32;
+                unitSymbol = "°F";
+            } else if (unit === "fahrenheit") {
+                convertedTemperature = (temperature - 32) * 5 / 9;
+                unitSymbol = "°C";
+            } else if (unit === "kelvin") {
+                convertedTemperature = temperature + 273.15;
+                unitSymbol = "K";
+            }
+    
+            resultArea.textContent = `Converted Temperature: ${convertedTemperature.toFixed(2)} ${unitSymbol}`;
+    
+            // Change background color based on temperature
+            if (convertedTemperature >= 30) {
+                container.style.backgroundColor = "#FF6347"; // Hot (red)
+            } else if (convertedTemperature >= 10) {
+                container.style.backgroundColor = "#FFA500"; // Warm (orange)
+            } else {
+                container.style.backgroundColor = "#87CEFA"; // Cold (blue)
+            }
+        });
+    });
+    </script>
+</body>
+</html>
